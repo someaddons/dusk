@@ -15,7 +15,7 @@ public class CommonConfiguration
         nightSpawnMod = builder.defineInRange("nightSpawnMod", 30, 1, 5000);
 
         builder.comment("Min time required to sleep, vanilla min time:12500, Midnight is 18000");
-        minSleepTime = builder.defineInRange("minSleepTime", 13500, 1, 23000);
+        minSleepTime = builder.defineInRange("minSleepTime", 14500, 1, 23000);
 
         builder.comment("Disable sleeping?, default: false");
         disableSleep = builder.define("disableSleep", false);
