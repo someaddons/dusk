@@ -40,16 +40,11 @@ public class EventHandler
     }
 
     /**
-     * Original max
-     */
-    private static final int MONSTER_MAX_DEFAULT = EntityClassification.MONSTER.max;
-
-    /**
      * Change vanilla values
      */
     private static void adjustClassification()
     {
-        EntityClassification.MONSTER.max = (int) (MONSTER_MAX_DEFAULT * spawnModifier);
+        EntityClassification.MONSTER.max = (int) (Dusk.config.getCommonConfig().baseMonsterCap.get() * spawnModifier);
     }
 
     /**
