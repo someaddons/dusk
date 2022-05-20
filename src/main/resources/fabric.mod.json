@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "dusk",
+  "version": "${version}",
+
+  "name": "Dusk Mod",
+  "description": "Dusk mod increases the mob cap the later the night gets",
+  "authors": [
+    "Someaddons"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "ARR",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.dusk.Dusk"
+    ]
+  },
+  "mixins": [
+    "dusk.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
