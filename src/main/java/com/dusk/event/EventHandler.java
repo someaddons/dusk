@@ -37,7 +37,7 @@ public class EventHandler
         }
         tickCounter = 0;
 
-        adjustSpawnModifier(world.getTimeOfDay());
+        adjustSpawnModifier(world.getTimeOfDay() % 24000);
     }
 
     /**
