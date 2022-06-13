@@ -31,7 +31,7 @@ public class EventHandler {
         }
         tickCounter = 0;
 
-        adjustSpawnModifier(event.world.getDayTime());
+        adjustSpawnModifier(event.world.getDayTime() % 24000);
     }
 
     /**
