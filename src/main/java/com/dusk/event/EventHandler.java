@@ -17,21 +17,25 @@ public class EventHandler {
     private static double spawnModifier = 1.0d;
 
     @SubscribeEvent
-    public static void onWorldTick(final TickEvent.WorldTickEvent event) {
-        if (event.world.isClientSide() || event.phase == TickEvent.Phase.START) {
+    public static void onWorldTick(final TickEvent.LevelTickEvent event)
+    {
+        if (event.level.isClientSide() || event.phase == TickEvent.Phase.START)
+        {
             return;
         }
 
-        if ((event.world.dimension() != Level.OVERWORLD)) {
+        if ((event.level.dimension() != Level.OVERWORLD))
+        {
             return;
         }
 
-        if (++tickCounter != 20) {
+        if (++tickCounter != 20)
+        {
             return;
         }
         tickCounter = 0;
 
-        adjustSpawnModifier(event.world.getDayTime() % 24000);
+        adjustSpawnModifier(event.level.getDayTime() % 24000);
     }
 
     /**
@@ -64,14 +68,16 @@ public class EventHandler {
 
     @SubscribeEvent
     public static void onPlayerSleep(PlayerSleepInBedEvent event) {
-        if (Dusk.config.getCommonConfig().disableSleep.get() || event.getPlayer().level.getDayTime() < Dusk.config.getCommonConfig().minSleepTime.get()) {
+        if (Dusk.config.getCommonConfig().disableSleep.get() || event.getEntity().level.getDayTime() < Dusk.config.getCommonConfig().minSleepTime.get())
+        {
             event.setResult(Player.BedSleepingProblem.NOT_POSSIBLE_NOW);
         }
 
-        if (event.getPlayer().level.isClientSide()) {
+        if (event.getEntity().level.isClientSide())
+        {
             return;
         }
 
-        ((ServerPlayer) event.getPlayer()).setRespawnPosition(event.getPlayer().level.dimension(), event.getPos(), event.getPlayer().getYRot(), false, true);
+        ((ServerPlayer) event.getEntity()).setRespawnPosition(event.getEntity().level.dimension(), event.getPos(), event.getEntity().getYRot(), false, true);
     }
 }
