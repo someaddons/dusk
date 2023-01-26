@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
@@ -56,21 +57,26 @@ public class EventHandler {
 
     // 1800 Midnight 24000(0) sunrise 13000 night 12500 sleep time -> Raise 12000 -> 16000, drop >20000 -> <12000
     private static void adjustSpawnModifier(final long time) {
-        if (time <= RAISE_STOP && time >= RAISE_START) {
+        if (time <= RAISE_STOP && time >= RAISE_START)
+        {
             spawnModifier += Dusk.config.getCommonConfig().nightSpawnMod.get() / INTERVAL;
             adjustClassification();
-        } else if (spawnModifier > 1.0d && (time > DROP_START || time < RAISE_START)) {
+        }
+        else if (spawnModifier > 1.0d && (time > DROP_START || time < RAISE_START))
+        {
             spawnModifier -= Dusk.config.getCommonConfig().nightSpawnMod.get() / INTERVAL;
             spawnModifier = Math.max(spawnModifier, 1.0d);
             adjustClassification();
         }
     }
 
-    @SubscribeEvent
-    public static void onPlayerSleep(PlayerSleepInBedEvent event) {
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onPlayerSleep(PlayerSleepInBedEvent event)
+    {
         if (Dusk.config.getCommonConfig().disableSleep.get() || event.getEntity().level.getDayTime() < Dusk.config.getCommonConfig().minSleepTime.get())
         {
             event.setResult(Player.BedSleepingProblem.NOT_POSSIBLE_NOW);
+            event.setCanceled(true);
         }
 
         if (event.getEntity().level.isClientSide())
