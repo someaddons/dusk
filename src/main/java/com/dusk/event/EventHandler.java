@@ -73,17 +73,22 @@ public class EventHandler {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onPlayerSleep(PlayerSleepInBedEvent event)
     {
-        if (Dusk.config.getCommonConfig().disableSleep.get() || event.getEntity().level.getDayTime() < Dusk.config.getCommonConfig().minSleepTime.get())
+        if (event.isCanceled())
+        {
+            return;
+        }
+
+        if (Dusk.config.getCommonConfig().disableSleep.get() || (event.getEntity().level().getDayTime() % 24000) < Dusk.config.getCommonConfig().minSleepTime.get())
         {
             event.setResult(Player.BedSleepingProblem.NOT_POSSIBLE_NOW);
             event.setCanceled(true);
         }
 
-        if (event.getEntity().level.isClientSide())
+        if (event.getEntity().level().isClientSide())
         {
             return;
         }
 
-        ((ServerPlayer) event.getEntity()).setRespawnPosition(event.getEntity().level.dimension(), event.getPos(), event.getEntity().getYRot(), false, true);
+        ((ServerPlayer) event.getEntity()).setRespawnPosition(event.getEntity().level().dimension(), event.getPos(), event.getEntity().getYRot(), false, true);
     }
 }
