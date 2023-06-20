@@ -2,14 +2,15 @@ package com.dusk.event;
 
 import com.dusk.Dusk;
 import com.mojang.datafixers.util.Either;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static net.minecraft.world.level.Level.OVERWORLD;
 
 /**
  * Handler to catch server tick events
@@ -19,14 +20,14 @@ public class EventHandler
     private static int    tickCounter   = 0;
     private static double spawnModifier = 1.0d;
 
-    public static void onWorldTick(final ServerWorld world)
+    public static void onWorldTick(final ServerLevel world)
     {
-        if (world.isClient())
+        if (world.isClientSide())
         {
             return;
         }
 
-        if ((world.getRegistryKey() != World.OVERWORLD))
+        if ((world.dimension() != OVERWORLD))
         {
             return;
         }
@@ -37,7 +38,7 @@ public class EventHandler
         }
         tickCounter = 0;
 
-        adjustSpawnModifier(world.getTimeOfDay() % 24000);
+        adjustSpawnModifier(world.getDayTime() % 24000);
     }
 
     /**
@@ -45,7 +46,7 @@ public class EventHandler
      */
     private static void adjustClassification()
     {
-        ((ISpawnGroupDataSetter) (Object) SpawnGroup.MONSTER).setMaxCap((int) (Dusk.config.getCommonConfig().baseMonsterCap * spawnModifier));
+        ((ISpawnGroupDataSetter) (Object) MobCategory.MONSTER).setMaxCap((int) (Dusk.config.getCommonConfig().baseMonsterCap * spawnModifier));
     }
 
     /**
@@ -74,15 +75,15 @@ public class EventHandler
     }
 
     public static void onPlayerSleep(
-      final ServerPlayerEntity serverPlayerEntity,
+      final ServerPlayer serverPlayerEntity,
       final BlockPos pos,
-      final CallbackInfoReturnable<Either<PlayerEntity.SleepFailureReason, Unit>> cir)
+      final CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir)
     {
-        if (Dusk.config.getCommonConfig().disableSleep || serverPlayerEntity.world.getTimeOfDay() < Dusk.config.getCommonConfig().minSleepTime)
+        if (Dusk.config.getCommonConfig().disableSleep || (serverPlayerEntity.level().getDayTime() % 24000) < Dusk.config.getCommonConfig().minSleepTime)
         {
-            cir.setReturnValue(Either.left(PlayerEntity.SleepFailureReason.NOT_POSSIBLE_NOW));
+            cir.setReturnValue(Either.left(Player.BedSleepingProblem.NOT_POSSIBLE_NOW));
         }
 
-        serverPlayerEntity.setSpawnPoint(serverPlayerEntity.world.getRegistryKey(), pos, serverPlayerEntity.getYaw(), false, true);
+        serverPlayerEntity.setRespawnPosition(serverPlayerEntity.level().dimension(), pos, serverPlayerEntity.getYHeadRot(), false, true);
     }
 }
