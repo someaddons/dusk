@@ -1,6 +1,7 @@
 package com.dusk;
 
-import com.dusk.config.Configuration;
+import com.cupboard.config.CupboardConfig;
+import com.dusk.config.CommonConfiguration;
 import com.dusk.event.EventHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -12,16 +13,12 @@ public class Dusk implements ModInitializer
 {
     public static final String MODID = "dusk";
 
-    public static final Logger        LOGGER = LogManager.getLogger();
-    public static        Configuration config;
+    public static final Logger                              LOGGER = LogManager.getLogger();
+    public static       CupboardConfig<CommonConfiguration> config = new CupboardConfig<>(MODID, new CommonConfiguration());
 
     @Override
     public void onInitialize()
     {
-        config = new Configuration();
-        config.load();
-        LOGGER.info("Dusk initialized");
-
         ServerTickEvents.END_WORLD_TICK.register(EventHandler::onWorldTick);
     }
 }

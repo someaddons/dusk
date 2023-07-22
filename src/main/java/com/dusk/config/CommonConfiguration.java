@@ -1,9 +1,10 @@
 package com.dusk.config;
 
 import com.dusk.Dusk;
+import com.cupboard.config.ICommonConfig;
 import com.google.gson.JsonObject;
 
-public class CommonConfiguration
+public class CommonConfiguration implements ICommonConfig
 {
     public int     nightSpawnMod  = 30;
     public int     minSleepTime   = 14500;
