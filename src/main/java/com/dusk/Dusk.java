@@ -1,6 +1,7 @@
 package com.dusk;
 
-import com.dusk.config.Configuration;
+import com.cupboard.config.CupboardConfig;
+import com.dusk.config.CommonConfiguration;
 import com.dusk.event.EventHandler;
 import com.dusk.event.ModEventHandler;
 import net.minecraftforge.fml.IExtensionPoint;
@@ -15,21 +16,22 @@ import static com.dusk.Dusk.MODID;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(MODID)
-public class Dusk {
+public class Dusk
+{
     public static final String MODID = "dusk";
 
-    private static final Logger LOGGER = LogManager.getLogger();
-    public static Configuration config;
+    private static final Logger                              LOGGER = LogManager.getLogger();
+    public static        CupboardConfig<CommonConfiguration> config = new CupboardConfig<>(MODID, new CommonConfiguration());
 
-    public Dusk() {
+    public Dusk()
+    {
         ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> "", (c, b) -> true));
-        config = new Configuration();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         Mod.EventBusSubscriber.Bus.MOD.bus().get().register(ModEventHandler.class);
         Mod.EventBusSubscriber.Bus.FORGE.bus().get().register(EventHandler.class);
     }
 
-    private void setup(final FMLCommonSetupEvent event) {
-        LOGGER.info("Dusk initialized");
+    private void setup(final FMLCommonSetupEvent event)
+    {
     }
 }

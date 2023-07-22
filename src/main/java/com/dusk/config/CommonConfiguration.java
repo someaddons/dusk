@@ -1,31 +1,55 @@
 package com.dusk.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import com.cupboard.config.ICommonConfig;
+import com.google.gson.JsonObject;
 
-public class CommonConfiguration
+public class CommonConfiguration implements ICommonConfig
 {
-    public final ForgeConfigSpec.ConfigValue<Integer> nightSpawnMod;
-    public final ForgeConfigSpec.ConfigValue<Integer> minSleepTime;
-    public final ForgeConfigSpec.ConfigValue<Integer> baseMonsterCap;
-    public final ForgeConfigSpec.ConfigValue<Boolean> disableSleep;
+    public int     nightSpawnMod  = 30;
+    public int     minSleepTime   = 14500;
+    public int     baseMonsterCap = 70;
+    public boolean disableSleep   = false;
 
-    protected CommonConfiguration(final ForgeConfigSpec.Builder builder)
+    public CommonConfiguration()
     {
-        builder.push("Dusk settings");
-        builder.comment("Percentage of how many more monster can appear at night, default: 30");
-        nightSpawnMod = builder.defineInRange("nightSpawnMod", 30, 1, 5000);
 
-        builder.comment(
+    }
+
+    @Override
+    public JsonObject serialize()
+    {
+        final JsonObject root = new JsonObject();
+
+        final JsonObject entry = new JsonObject();
+        entry.addProperty("desc:", "Percentage of how many more monster can appear at night, default: 30");
+        entry.addProperty("nightSpawnMod", nightSpawnMod);
+        root.add("nightSpawnMod", entry);
+
+        final JsonObject entry2 = new JsonObject();
+        entry2.addProperty("desc:",
           "Base monster cap to act upon, this is the value it'll increase from/reduce to at the start/end of the night. Increase this to see more monsters in the world, default(Vanilla): 70");
-        baseMonsterCap = builder.defineInRange("baseMonsterCap", 70, 1, 5000);
+        entry2.addProperty("baseMonsterCap", baseMonsterCap);
+        root.add("baseMonsterCap", entry2);
 
-        builder.comment("Min time required to sleep, vanilla min time:12500, Midnight is 18000");
-        minSleepTime = builder.defineInRange("minSleepTime", 14500, 1, 23000);
+        final JsonObject entry3 = new JsonObject();
+        entry3.addProperty("desc:", "Min time required to sleep, vanilla min time:12500, Midnight is 18000");
+        entry3.addProperty("minSleepTime", minSleepTime);
+        root.add("minSleepTime", entry3);
 
-        builder.comment("Disable sleeping?, default: false");
-        disableSleep = builder.define("disableSleep", false);
+        final JsonObject entry4 = new JsonObject();
+        entry4.addProperty("desc:", "Disable sleeping?, default: false");
+        entry4.addProperty("disableSleep", disableSleep);
+        root.add("disableSleep", entry4);
 
-        // Escapes the current category level
-        builder.pop();
+        return root;
+    }
+
+    @Override
+    public void deserialize(final JsonObject data)
+    {
+        nightSpawnMod = data.get("nightSpawnMod").getAsJsonObject().get("nightSpawnMod").getAsInt();
+        baseMonsterCap = data.get("baseMonsterCap").getAsJsonObject().get("baseMonsterCap").getAsInt();
+        minSleepTime = data.get("minSleepTime").getAsJsonObject().get("minSleepTime").getAsInt();
+        disableSleep = data.get("disableSleep").getAsJsonObject().get("disableSleep").getAsBoolean();
     }
 }
