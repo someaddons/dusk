@@ -79,11 +79,11 @@ public class EventHandler
       final BlockPos pos,
       final CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir)
     {
-        if (Dusk.config.getCommonConfig().disableSleep || (serverPlayerEntity.level().getDayTime() % 24000) < Dusk.config.getCommonConfig().minSleepTime)
+        if (Dusk.config.getCommonConfig().disableSleep || (serverPlayerEntity.level.getDayTime() % 24000) < Dusk.config.getCommonConfig().minSleepTime)
         {
             cir.setReturnValue(Either.left(Player.BedSleepingProblem.NOT_POSSIBLE_NOW));
         }
 
-        serverPlayerEntity.setRespawnPosition(serverPlayerEntity.level().dimension(), pos, serverPlayerEntity.getYHeadRot(), false, true);
+        serverPlayerEntity.setRespawnPosition(serverPlayerEntity.level.dimension(), pos, serverPlayerEntity.getYHeadRot(), false, true);
     }
 }
