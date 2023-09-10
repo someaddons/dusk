@@ -1,11 +1,9 @@
 package com.dusk.event;
 
 import com.dusk.Dusk;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.entity.player.SleepingTimeCheckEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -72,22 +70,6 @@ public class EventHandler
             spawnModifier = Math.max(spawnModifier, 1.0d);
             adjustClassification();
         }
-    }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onPlayerSleep(PlayerSleepInBedEvent event)
-    {
-        if (event.isCanceled())
-        {
-            return;
-        }
-
-        if (event.getEntity().level().isClientSide())
-        {
-            return;
-        }
-
-        ((ServerPlayer) event.getEntity()).setRespawnPosition(event.getEntity().level().dimension(), event.getPos(), event.getEntity().getYRot(), false, true);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
