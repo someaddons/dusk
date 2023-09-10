@@ -83,7 +83,5 @@ public class EventHandler
         {
             cir.setReturnValue(Either.left(Player.BedSleepingProblem.NOT_POSSIBLE_NOW));
         }
-
-        serverPlayerEntity.setRespawnPosition(serverPlayerEntity.level().dimension(), pos, serverPlayerEntity.getYHeadRot(), false, true);
     }
 }
