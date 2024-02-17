@@ -1,13 +1,16 @@
 package com.dusk.event;
 
 import com.dusk.Dusk;
+import com.mojang.datafixers.util.Either;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.SleepingTimeCheckEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * Handler to catch server tick events
@@ -72,17 +75,14 @@ public class EventHandler
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void onPlayerSleep(SleepingTimeCheckEvent event)
+    public static void onPlayerSleep(
+      final ServerPlayer serverPlayerEntity,
+      final BlockPos pos,
+      final CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir)
     {
-        if (event.isCanceled())
+        if (Dusk.config.getCommonConfig().disableSleep || (serverPlayerEntity.level().getDayTime() % 24000) < Dusk.config.getCommonConfig().minSleepTime)
         {
-            return;
-        }
-
-        if (Dusk.config.getCommonConfig().disableSleep || (event.getEntity().level().getDayTime() % 24000) < Dusk.config.getCommonConfig().minSleepTime)
-        {
-            event.setResult(Event.Result.DENY);
+            cir.setReturnValue(Either.left(Player.BedSleepingProblem.NOT_POSSIBLE_NOW));
         }
     }
 }
