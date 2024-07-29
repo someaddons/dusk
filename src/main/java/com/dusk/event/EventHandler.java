@@ -8,8 +8,8 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
@@ -21,14 +21,14 @@ public class EventHandler
     private static double spawnModifier = 1.0d;
 
     @SubscribeEvent
-    public static void onWorldTick(final TickEvent.LevelTickEvent event)
+    public static void onWorldTick(final LevelTickEvent.Post event)
     {
-        if (event.level.isClientSide() || event.phase == TickEvent.Phase.START)
+        if (event.getLevel().isClientSide())
         {
             return;
         }
 
-        if ((event.level.dimension() != Level.OVERWORLD))
+        if ((event.getLevel().dimension() != Level.OVERWORLD))
         {
             return;
         }
@@ -39,7 +39,7 @@ public class EventHandler
         }
         tickCounter = 0;
 
-        adjustSpawnModifier(event.level.getDayTime() % 24000);
+        adjustSpawnModifier(event.getLevel().getDayTime() % 24000);
     }
 
     /**
