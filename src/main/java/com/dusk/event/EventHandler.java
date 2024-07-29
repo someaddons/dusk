@@ -22,11 +22,6 @@ public class EventHandler
 
     public static void onWorldTick(final ServerLevel world)
     {
-        if (world.isClientSide())
-        {
-            return;
-        }
-
         if ((world.dimension() != OVERWORLD))
         {
             return;

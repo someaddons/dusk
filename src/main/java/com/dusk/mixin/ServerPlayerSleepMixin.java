@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerPlayer.class)
 public class ServerPlayerSleepMixin
 {
-    @Inject(method = "startSleepInBed", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "startSleepInBed", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;startSleepInBed(Lnet/minecraft/core/BlockPos;)Lcom/mojang/datafixers/util/Either;"), cancellable = true)
     public void on(
       final BlockPos blockPos,
       final CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir)
