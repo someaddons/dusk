@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
@@ -83,6 +84,15 @@ public class EventHandler
         if (Dusk.config.getCommonConfig().disableSleep || (serverPlayerEntity.level().getDayTime() % 24000) < Dusk.config.getCommonConfig().minSleepTime)
         {
             cir.setReturnValue(Either.left(Player.BedSleepingProblem.NOT_POSSIBLE_NOW));
+        }
+    }
+
+    public static void onPlayerSleep(final ServerPlayer serverPlayerEntity, final BlockPos pos, final CallbackInfo ci)
+    {
+        if (Dusk.config.getCommonConfig().disableSleep || (serverPlayerEntity.level().getDayTime() % 24000) < Dusk.config.getCommonConfig().minSleepTime)
+        {
+            serverPlayerEntity.sendSystemMessage(Player.BedSleepingProblem.NOT_POSSIBLE_NOW.getMessage(), true);
+            ci.cancel();
         }
     }
 }

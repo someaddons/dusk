@@ -93,6 +93,7 @@ configurations {
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
     implementation "curse.maven:cupboard-326652:5477519"
+    implementation "curse.maven:comforts-276951:5821146"
 }
 
 tasks.withType(ProcessResources).configureEach {
