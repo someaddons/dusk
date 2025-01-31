@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 public class CommonConfiguration implements ICommonConfig
 {
     public int     nightSpawnMod  = 30;
-    public int     minSleepTime   = 14500;
+    public int minSleepTime = 13500;
     public int     baseMonsterCap = 70;
     public boolean disableSleep   = false;
 

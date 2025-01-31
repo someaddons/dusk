@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.player.Player;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.minecraft.world.level.Level.OVERWORLD;
@@ -77,6 +78,15 @@ public class EventHandler
         if (Dusk.config.getCommonConfig().disableSleep || (serverPlayerEntity.level().getDayTime() % 24000) < Dusk.config.getCommonConfig().minSleepTime)
         {
             cir.setReturnValue(Either.left(Player.BedSleepingProblem.NOT_POSSIBLE_NOW));
+        }
+    }
+
+    public static void onPlayerSleep(final ServerPlayer serverPlayerEntity, final BlockPos pos, final CallbackInfo ci)
+    {
+        if (Dusk.config.getCommonConfig().disableSleep || (serverPlayerEntity.level().getDayTime() % 24000) < Dusk.config.getCommonConfig().minSleepTime)
+        {
+            serverPlayerEntity.sendSystemMessage(Player.BedSleepingProblem.NOT_POSSIBLE_NOW.getMessage(), true);
+            ci.cancel();
         }
     }
 }
