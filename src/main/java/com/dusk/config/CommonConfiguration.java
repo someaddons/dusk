@@ -11,6 +11,7 @@ public class CommonConfiguration implements ICommonConfig
     public boolean enableSleepRestriction = true;
     public int     baseMonsterCap         = 70;
     public boolean disableSleep           = false;
+    public int nightSpawnMaxBlockLight = 1;
 
     public CommonConfiguration()
     {
@@ -33,7 +34,7 @@ public class CommonConfiguration implements ICommonConfig
         root.add("sleepTime", entry3);
 
         final JsonObject entry4 = new JsonObject();
-        entry4.addProperty("desc:", "Disable sleeping?, default: false");
+        entry4.addProperty("desc:", "Disables sleeping globally, default: false");
         entry4.addProperty("disableSleep", disableSleep);
         root.add("disableSleep", entry4);
 
@@ -41,6 +42,12 @@ public class CommonConfiguration implements ICommonConfig
         entry.addProperty("desc:", "Percentage of how many more monster can appear at night, default: 30");
         entry.addProperty("nightSpawnMod", nightSpawnMod);
         root.add("nightSpawnMod", entry);
+
+
+        final JsonObject entry5 = new JsonObject();
+        entry5.addProperty("desc:", "Set the maximum light level at which mobs can spawn during night, affects only dimensions with a night cycle, default: 3 Vanilla: 0");
+        entry5.addProperty("nightSpawnMaxBlockLight", nightSpawnMaxBlockLight);
+        root.add("nightSpawnMaxBlockLight", entry5);
 
         final JsonObject entry2 = new JsonObject();
         entry2.addProperty("desc:",
@@ -60,5 +67,6 @@ public class CommonConfiguration implements ICommonConfig
         sleepDisableEndTime = data.get("sleepTime").getAsJsonObject().get("sleepDisableEndTime").getAsInt();
         enableSleepRestriction = data.get("sleepTime").getAsJsonObject().get("enabled").getAsBoolean();
         disableSleep = data.get("disableSleep").getAsJsonObject().get("disableSleep").getAsBoolean();
+        nightSpawnMaxBlockLight = data.get("nightSpawnMaxBlockLight").getAsJsonObject().get("nightSpawnMaxBlockLight").getAsInt();
     }
 }
