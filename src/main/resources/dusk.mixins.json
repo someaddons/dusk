@@ -3,6 +3,7 @@
   "package": "com.dusk.mixin",
   "mixins": [
     "MobAwarenessRangeMixin",
+    "MobPotionChanceMixin",
     "ServerPlayerSleepMixin",
     "SpawnLightMixin",
     "SpawnGroupMixin"
