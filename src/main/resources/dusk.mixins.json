@@ -1,15 +1,14 @@
 {
-  "required": true,
-  "minVersion": "0.8",
+  "required": false,
   "package": "com.dusk.mixin",
-  "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ServerPlayerSleepMixin",
+    "SpawnLightMixin",
     "SpawnGroupMixin"
   ],
   "client": [
   ],
   "injectors": {
-    "defaultRequire": 1
+    "defaultRequire": 0
   }
 }
