@@ -5,6 +5,7 @@
   "refmap": "dusk.refmap.json",
   "mixins": [
     "MobAwarenessRangeMixin",
+    "MobPotionChanceMixin",
     "ServerPlayerSleepMixin",
     "SpawnLightMixin"
   ],
