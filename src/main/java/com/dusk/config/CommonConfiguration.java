@@ -12,6 +12,7 @@ public class CommonConfiguration implements ICommonConfig
     public int     baseMonsterCap         = 70;
     public boolean disableSleep           = false;
     public int nightSpawnMaxBlockLight = 1;
+    public double nightAwarenessRangeMultiplier = 1.2;
 
     public CommonConfiguration()
     {
@@ -43,11 +44,15 @@ public class CommonConfiguration implements ICommonConfig
         entry.addProperty("nightSpawnMod", nightSpawnMod);
         root.add("nightSpawnMod", entry);
 
-
         final JsonObject entry5 = new JsonObject();
         entry5.addProperty("desc:", "Set the maximum light level at which mobs can spawn during night, affects only dimensions with a night cycle, default: 3 Vanilla: 0");
         entry5.addProperty("nightSpawnMaxBlockLight", nightSpawnMaxBlockLight);
         root.add("nightSpawnMaxBlockLight", entry5);
+
+        final JsonObject entry6 = new JsonObject();
+        entry6.addProperty("desc:", "Set the detection range multiplier for hostiles at night, default: 1.2 Vanilla: 1.0");
+        entry6.addProperty("nightAwarenessRangeMultiplier", nightAwarenessRangeMultiplier);
+        root.add("nightAwarenessRangeMultiplier", entry6);
 
         final JsonObject entry2 = new JsonObject();
         entry2.addProperty("desc:",
@@ -68,5 +73,6 @@ public class CommonConfiguration implements ICommonConfig
         enableSleepRestriction = data.get("sleepTime").getAsJsonObject().get("enabled").getAsBoolean();
         disableSleep = data.get("disableSleep").getAsJsonObject().get("disableSleep").getAsBoolean();
         nightSpawnMaxBlockLight = data.get("nightSpawnMaxBlockLight").getAsJsonObject().get("nightSpawnMaxBlockLight").getAsInt();
+        nightAwarenessRangeMultiplier = data.get("nightAwarenessRangeMultiplier").getAsJsonObject().get("nightAwarenessRangeMultiplier").getAsDouble();
     }
 }
