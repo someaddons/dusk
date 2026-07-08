@@ -81,7 +81,9 @@ public class EventHandler
       final BlockPos pos,
       final CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir)
     {
-        if (Dusk.config.getCommonConfig().disableSleep || (serverPlayerEntity.level().getDayTime() % 24000) < Dusk.config.getCommonConfig().minSleepTime)
+        final long daytime = (serverPlayerEntity.level().getDayTime() % 24000);
+        if (Dusk.config.getCommonConfig().disableSleep || (Dusk.config.getCommonConfig().enableSleepRestriction && daytime < Dusk.config.getCommonConfig().sleepDisableEndTime
+            && daytime > Dusk.config.getCommonConfig().sleepDisableStartTime))
         {
             cir.setReturnValue(Either.left(Player.BedSleepingProblem.NOT_POSSIBLE_NOW));
         }
@@ -89,7 +91,9 @@ public class EventHandler
 
     public static void onPlayerSleep(final ServerPlayer serverPlayerEntity, final BlockPos pos, final CallbackInfo ci)
     {
-        if (Dusk.config.getCommonConfig().disableSleep || (serverPlayerEntity.level().getDayTime() % 24000) < Dusk.config.getCommonConfig().minSleepTime)
+        final long daytime = (serverPlayerEntity.level().getDayTime() % 24000);
+        if (Dusk.config.getCommonConfig().disableSleep || (Dusk.config.getCommonConfig().enableSleepRestriction && daytime < Dusk.config.getCommonConfig().sleepDisableEndTime
+            && daytime > Dusk.config.getCommonConfig().sleepDisableStartTime))
         {
             serverPlayerEntity.sendSystemMessage(Player.BedSleepingProblem.NOT_POSSIBLE_NOW.getMessage(), true);
             ci.cancel();
