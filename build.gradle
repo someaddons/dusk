@@ -107,7 +107,7 @@ configurations {
 }
 
 dependencies {
-    implementation "curse.maven:cupboard-326652:7746488"
+    implementation "curse.maven:cupboard-326652:8260590"
 }
 
 def loaderVersionRange = providers.gradleProperty("loader_version_range")

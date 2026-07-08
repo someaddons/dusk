@@ -43,7 +43,7 @@ public abstract class MobPotionChanceMixin extends TargetGoal
             final Holder<MobEffect> effect = RegistryLookup.getHolder(target.level(), Registries.MOB_EFFECT, chosen.potionID);
             if (effect != null)
             {
-                mob.addEffect(new MobEffectInstance(effect.get(), chosen.secondsDuration * 20, chosen.level - 1));
+                mob.addEffect(new MobEffectInstance(effect, chosen.secondsDuration * 20, chosen.level - 1));
             }
         }
     }
