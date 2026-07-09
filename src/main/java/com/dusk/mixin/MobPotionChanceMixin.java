@@ -37,6 +37,11 @@ public abstract class MobPotionChanceMixin extends TargetGoal
         if (target instanceof ServerPlayer && Dusk.config.getCommonConfig().enableNightBlessings && target.level().isNight())
         {
             final PotionEntry chosen = Dusk.config.getCommonConfig().getRandomPotionEntry();
+            if (chosen == null)
+            {
+                return;
+            }
+
             final Holder<MobEffect> effect = RegistryLookup.getHolder(target.level(), Registries.MOB_EFFECT, chosen.potionID);
             if (effect != null)
             {
