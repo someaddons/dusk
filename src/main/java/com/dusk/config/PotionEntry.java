@@ -1,6 +1,6 @@
 package com.dusk.config;
 
-import net.minecraft.resources.ResourceLocation;
+import com.cupboard.util.ResourceLocation;
 
 public class PotionEntry
 {

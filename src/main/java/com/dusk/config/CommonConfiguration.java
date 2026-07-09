@@ -1,10 +1,10 @@
 package com.dusk.config;
 
 import com.cupboard.config.ICommonConfig;
+import com.cupboard.util.ResourceLocation;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.HashSet;

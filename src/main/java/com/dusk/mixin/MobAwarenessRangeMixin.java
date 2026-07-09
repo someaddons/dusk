@@ -26,7 +26,7 @@ public abstract class MobAwarenessRangeMixin extends TargetGoal
     @Inject(method = "findTarget", at = @At("HEAD"))
     private void adjustSearchRange(final CallbackInfo ci)
     {
-        if (mob instanceof Enemy && mob.level().isNight() && !mob.level().dimensionType().hasFixedTime())
+        if (mob instanceof Enemy && mob.level().isDarkOutside() && !mob.level().dimensionType().hasFixedTime())
         {
             targetConditions.range(getFollowDistance());
         }
@@ -35,7 +35,7 @@ public abstract class MobAwarenessRangeMixin extends TargetGoal
     @Override
     protected double getFollowDistance()
     {
-        if (mob instanceof Enemy && mob.level().isNight() && !mob.level().dimensionType().hasFixedTime())
+        if (mob instanceof Enemy && mob.level().isDarkOutside() && !mob.level().dimensionType().hasFixedTime())
         {
             return super.getFollowDistance() * Dusk.config.getCommonConfig().nightAwarenessRangeMultiplier;
         }
