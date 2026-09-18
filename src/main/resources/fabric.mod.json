@@ -27,10 +27,7 @@
   "accessWidener": "dusk.accessWidener",
   "depends": {
     "fabricloader": ">=0.11.3",
-    "fabric": "*",
-    "cupboard": ">=1.20.1-1.2",
-    "minecraft": "1.20.x",
-    "java": ">=17"
+    "cupboard": "*"
   },
   "suggests": {
     "another-mod": "*"

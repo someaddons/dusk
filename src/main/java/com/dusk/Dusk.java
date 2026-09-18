@@ -19,6 +19,6 @@ public class Dusk implements ModInitializer
     @Override
     public void onInitialize()
     {
-        ServerTickEvents.END_WORLD_TICK.register(EventHandler::onWorldTick);
+        ServerTickEvents.END_LEVEL_TICK.register(EventHandler::onWorldTick);
     }
 }

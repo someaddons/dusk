@@ -34,7 +34,7 @@ public abstract class MobPotionChanceMixin extends TargetGoal
     private void rollPotionOnCombatStart(final CallbackInfo ci)
     {
         // Only apply potion effect if it doesnt exist
-        if (target instanceof ServerPlayer && Dusk.config.getCommonConfig().enableNightBlessings && target.level().isNight())
+        if (target instanceof ServerPlayer && Dusk.config.getCommonConfig().enableNightBlessings && target.level().isDarkOutside())
         {
             final PotionEntry chosen = Dusk.config.getCommonConfig().getRandomPotionEntry();
             if (chosen == null)
@@ -45,7 +45,7 @@ public abstract class MobPotionChanceMixin extends TargetGoal
             final Holder<MobEffect> effect = RegistryLookup.getHolder(target.level(), Registries.MOB_EFFECT, chosen.potionID);
             if (effect != null)
             {
-                mob.addEffect(new MobEffectInstance(effect.value(), chosen.secondsDuration * 20, chosen.level - 1));
+                mob.addEffect(new MobEffectInstance(effect, chosen.secondsDuration * 20, chosen.level - 1));
             }
         }
     }
