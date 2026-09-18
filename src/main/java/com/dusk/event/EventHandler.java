@@ -3,6 +3,7 @@ package com.dusk.event;
 import com.dusk.Dusk;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.MobCategory;
@@ -85,6 +86,7 @@ public class EventHandler
         if (Dusk.config.getCommonConfig().disableSleep || (Dusk.config.getCommonConfig().enableSleepRestriction && daytime < Dusk.config.getCommonConfig().sleepDisableEndTime
             && daytime > Dusk.config.getCommonConfig().sleepDisableStartTime))
         {
+            serverPlayerEntity.sendSystemMessage(Component.translatable("block.minecraft.bed.no_sleep"), true);
             cir.setReturnValue(Either.left(Player.BedSleepingProblem.OTHER_PROBLEM));
         }
     }
@@ -95,7 +97,7 @@ public class EventHandler
         if (Dusk.config.getCommonConfig().disableSleep || (Dusk.config.getCommonConfig().enableSleepRestriction && daytime < Dusk.config.getCommonConfig().sleepDisableEndTime
             && daytime > Dusk.config.getCommonConfig().sleepDisableStartTime))
         {
-            serverPlayerEntity.sendSystemMessage(Player.BedSleepingProblem.OTHER_PROBLEM.message(), true);
+            serverPlayerEntity.sendSystemMessage(Component.translatable("block.minecraft.bed.no_sleep"), true);
             ci.cancel();
         }
     }
