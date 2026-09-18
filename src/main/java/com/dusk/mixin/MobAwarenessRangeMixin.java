@@ -33,7 +33,7 @@ public abstract class MobAwarenessRangeMixin extends TargetGoal
     }
 
     @Override
-    protected double getFollowDistance()
+    public double getFollowDistance()
     {
         if (mob instanceof Enemy && mob.level().isDarkOutside() && !mob.level().dimensionType().hasFixedTime())
         {

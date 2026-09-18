@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
@@ -79,8 +78,8 @@ public class EventHandler
 
     public static void onPlayerSleep(
       final ServerPlayer serverPlayerEntity,
-      final BlockPos pos,
-      final CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir)
+        final CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir,
+        final BlockPos pos)
     {
         final long daytime = (serverPlayerEntity.level().getDefaultClockTime() % 24000);
         if (Dusk.config.getCommonConfig().disableSleep || (Dusk.config.getCommonConfig().enableSleepRestriction && daytime < Dusk.config.getCommonConfig().sleepDisableEndTime
@@ -91,14 +90,14 @@ public class EventHandler
         }
     }
 
-    public static void onPlayerSleep(final ServerPlayer serverPlayerEntity, final BlockPos pos, final CallbackInfo ci)
+    public static void onPlayerSleep(final ServerPlayer serverPlayerEntity, final BlockPos pos, final CallbackInfoReturnable<Boolean> cir)
     {
         final long daytime = (serverPlayerEntity.level().getDefaultClockTime() % 24000);
         if (Dusk.config.getCommonConfig().disableSleep || (Dusk.config.getCommonConfig().enableSleepRestriction && daytime < Dusk.config.getCommonConfig().sleepDisableEndTime
             && daytime > Dusk.config.getCommonConfig().sleepDisableStartTime))
         {
             serverPlayerEntity.sendSystemMessage(Component.translatable("block.minecraft.bed.no_sleep"), true);
-            ci.cancel();
+            cir.setReturnValue(false);
         }
     }
 }
