@@ -1,12 +1,14 @@
 package com.dusk.mixin;
 
 import com.dusk.event.EventHandler;
+import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.attribute.BedRule;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractBedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,9 +17,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayer.class)
-public class ServerPlayerSleepMixin
+public abstract class ServerPlayerSleepMixin extends Player
 {
-    @Inject(method = "startSleepInBed", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/attribute/BedRule;canSleep(Lnet/minecraft/world/level/Level;)Z"), cancellable = true)
+    public ServerPlayerSleepMixin(final Level level, final GameProfile gameProfile)
+    {
+        super(level, gameProfile);
+    }
+
+    @Inject(method = "startSleepInBed", at = @At(value = "HEAD"), cancellable = true)
     public void on(
         final AbstractBedBlock bedBlock,
         final BlockState bedBlockState,
@@ -25,7 +32,10 @@ public class ServerPlayerSleepMixin
         final BlockPos pos,
         final CallbackInfoReturnable<Either<Player.BedSleepingProblem, Unit>> cir)
     {
-        EventHandler.onPlayerSleep((ServerPlayer) (Object) this, cir, pos);
+        if (!this.isSleeping() && this.isAlive())
+        {
+            EventHandler.onPlayerSleep((ServerPlayer) (Object) this, cir, pos);
+        }
     }
 
     @Inject(method = "startSleeping", at = @At(value = "HEAD"), cancellable = true)
